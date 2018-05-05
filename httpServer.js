@@ -123,6 +123,33 @@ app.get('/getQuestions', function (req,res) {
 	});
 
 
+app.post('/uploadAnswer',function(req,res){
+       // note that we are using POST here as we are uploading data
+       // so the parameters form part of the BODY of the request rather than the RESTful API
+       console.dir(req.body);
+       pool.connect(function(err,client,done) {
+             if(err){
+             console.log("not able to get connection "+ err);
+             res.status(400).send(err);
+             }
+
+            // pull the geometry component together
+            // note that well known text requires the points as longitude/latitude !
+            // well known text should look like: 'POINT(-71.064544 42.28787)'
+       //     var geometrystring = "st_geomfromtext('POINT(" + req.body.lng + " " + req.body.lat + ")'";
+
+             var querystring = "INSERT into app_answers (question,answer,answer_correct) values ('";
+             querystring = querystring + req.body.question + "','" + req.body.answer +"','" + req.body.cAnswer+"')";
+             console.log(querystring);
+             client.query( querystring,function(err,result) {
+          done();
+          if(err){
+               console.log(err);
+               res.status(400).send(err);
+          }
+          res.status(200).send("Answer uploaded!");
+       });
+}); });
 
 
 	
