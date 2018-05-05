@@ -21,35 +21,42 @@ app.use(bodyParser.json());
 	});
 
 app.post('/uploadData',function(req,res){
-	// note that we are using POST here as we are uploading data
-	// so the parameters form part of the BODY of the request rather than the RESTful API
-	console.dir(req.body);
+       // note that we are using POST here as we are uploading data
+       // so the parameters form part of the BODY of the request rather than the RESTful API
+       console.dir(req.body);
+       pool.connect(function(err,client,done) {
+             if(err){
+             console.log("not able to get connection "+ err);
+             res.status(400).send(err);
+             }
 
- 	pool.connect(function(err,client,done) {
-       	if(err){
-          	console.log("not able to get connection "+ err);
-           	res.status(400).send(err);
-       	} 
-// pull the geometry component together
-// note that well known text requires the points as longitude/latitude !
-// well known text should look like: 'POINT(-71.064544 42.28787)'
-var geometrystring = "st_geomfromtext('POINT(" + req.body.longitude + " " + req.body.latitude + ")'";
+            // pull the geometry component together
+            // note that well known text requires the points as longitude/latitude !
+            // well known text should look like: 'POINT(-71.064544 42.28787)'
+           var geometrystring = "st_geomfromtext('POINT(" + req.body.lng + " " + req.body.lat + ")'";
 
-var querystring = "INSERT into formdata (name,surname,module,language, modulelist, lecturetime, geom) values ('";
-querystring = querystring + req.body.name + "','" + req.body.surname + "','" + req.body.module + "','";
-querystring = querystring + req.body.language + "','" + req.body.modulelist + "','" + req.body.lecturetime+"',"+geometrystring + "))";
-       	console.log(querystring);
-       	client.query( querystring,function(err,result) {
-          done(); 
+             var querystring = "INSERT into app_questions (location_name,question,answer_1,answer_2,answer_3,answer_4,answer_correct,question_location) values ('";
+             querystring = querystring + req.body.location_name + "','" + req.body.question + "','" + req.body.answer_1+"','" + req.body.answer_2+"','" + req.body.answer_3+"','" + req.body.answer_4+"','" + req.body.answer_correct+"'," + geometrystring +"))";
+             console.log(querystring);
+             client.query( querystring,function(err,result) {
+          done();
           if(err){
                console.log(err);
                res.status(400).send(err);
           }
-          res.status(200).send("row inserted");
+          res.status(200).send("Question uploaded");
        });
-    });
+	}); 
 
 });
+
+
+
+
+
+
+
+
 
 	
 	// adding functionality to log the requests
@@ -59,8 +66,8 @@ querystring = querystring + req.body.language + "','" + req.body.modulelist + "'
 		console.log("The file " + filename + " was requested.");
 		next();
 	});
-	
-
+	//addition from practical
+	var fs = require('fs');
 	// read in the file and force it to be a string by adding “” at the beginning
 	var configtext = ""+fs.readFileSync("/home/studentuser/certs/postGISConnection.js");
 
