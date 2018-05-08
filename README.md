@@ -152,19 +152,19 @@ A HTTPS server is not be able to process the required requests in Microsoft Edge
 Although Node.js  is compatible with several data stores,  Postgres is used as it handles spatial data very efficiently.
 
 #### Installation 
- 2. If you have not already done so, clone the **server** repository:
+ 1. If you have not already done so, clone the **server** repository:
  
 `git clone https://github.com/CoryWilliamsGIS/server`
 
- 3. Navigate to the server repository:
+ 2. Navigate to the server repository:
  
 `cd server`
 
- 4. Run the server in the background:
+ 3. Run the server in the background:
  
 `node httpServer.js &`
 
-5. Once finished, bring the http server into the foreground and exit it:
+4. Once finished, bring the http server into the foreground and exit it:
 
 `fg 1`
 
