@@ -76,6 +76,10 @@ Menu: <img src="https://user-images.githubusercontent.com/35572803/39753705-a6c4
 
 This feature uses the httpServer to retrieve all questions currently in the database and adds them to the Leaflet map. This is useful as the administrator / question setter can avoid placing questions in a location which is too close to an existing question if they wish.
 
+Menu: <img src="https://user-images.githubusercontent.com/35572803/39790666-4da1b634-532f-11e8-824a-e65ac45d0206.png" width="70"> 
+
+Provides access to the web application user guide, enabling efficient trouble shooting if required.
+
 
 ## Mobile Application - Quiz App
 
